@@ -1,0 +1,1122 @@
+<!DOCTYPE html> <!-- Define que este documento usa HTML5 -->
+<html lang="pt-BR"> <!-- Define o idioma principal do site como português do Brasil -->
+<head>
+  <meta charset="UTF-8" /> <!-- Permite usar acentos e caracteres especiais -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- Faz o layout se adaptar a desktop, tablet e celular -->
+  <title>Ghibli Burger House | Cardápio Digital</title> <!-- Título que aparece na aba do navegador -->
+
+  <!-- Conexão antecipada com o Google Fonts para melhorar o carregamento das fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Fontes usadas no projeto: Cormorant Garamond para títulos e Nunito para textos -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* =====================================================
+       VARIÁVEIS GLOBAIS DE COR
+       Facilita trocar as cores do site inteiro em um lugar só
+    ===================================================== */
+    :root {
+      --forest: #34cacf;
+      --forest-dark: #0b1511;
+      --green: #4be4b1;
+      --cream: #f4e7d3;
+      --gold: #d9b36c;
+      --wood: #8c5b3f;
+      --red: #d64b4b;
+      --dark: #0d1512;
+      --white: #fffaf0;
+    }
+
+    /* Reset básico: remove margens/paddings padrão do navegador */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Permite rolagem suave ao clicar nos links do menu */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Corpo geral do site */
+    body {
+      min-height: 100vh;
+      font-family: "Nunito", sans-serif;
+      color: var(--cream);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(217, 179, 108, 0.22), transparent 25%),
+        radial-gradient(circle at 80% 10%, rgba(61, 107, 92, 0.45), transparent 25%),
+        linear-gradient(135deg, #0b1511, var(--forest), #090f0d);
+      overflow-x: hidden;
+    }
+
+    /* =====================================================
+       IMAGEM FIXA DECORATIVA DOS TOTOROS
+    ===================================================== */
+    .totoro-fixed {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 420px;
+      z-index: 1;
+      opacity: 0.9;
+      pointer-events: none;
+      filter: drop-shadow(0 0 30px rgba(0,0,0,0.45));
+      animation: totoroFloat 5s ease-in-out infinite;
+    }
+
+    /* Animação suave dos Totoros flutuando */
+    @keyframes totoroFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* =====================================================
+       PARTÍCULAS MÁGICAS DO FUNDO
+    ===================================================== */
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(217, 179, 108, 0.8);
+      animation: float 9s infinite ease-in-out;
+      box-shadow: 0 0 18px rgba(217, 179, 108, 0.9);
+    }
+
+    @keyframes float {
+      0% { transform: translateY(110vh) scale(0.7); opacity: 0; }
+      20% { opacity: 1; }
+      100% { transform: translateY(-20vh) scale(1.2); opacity: 0; }
+    }
+
+    /* =====================================================
+       CABEÇALHO RESPONSIVO
+       Funciona em desktop e mobile sem quebrar
+    ===================================================== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 18px 7%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      background: rgba(5, 12, 10, 0.45);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(244, 231, 211, 0.12);
+    }
+
+    /* Logo com imagem + nome */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(1.5rem, 3vw, 2.8rem);
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 1px;
+      flex-shrink: 0;
+    }
+
+    .logo img {
+      width: clamp(60px, 8vw, 100px);
+      height: clamp(60px, 8vw, 100px);
+      object-fit: contain;
+    }
+
+    /* Menu principal */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: var(--cream);
+      text-decoration: none;
+      font-weight: 700;
+      opacity: 0.9;
+      transition: 0.3s;
+      white-space: nowrap;
+    }
+
+    nav a:hover {
+      color: var(--gold);
+    }
+
+    /* Botões principais */
+    .btn {
+      border: none;
+      padding: 13px 22px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--gold), #f5d891);
+      color: #2b1c10;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(217, 179, 108, 0.25);
+      transition: 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 18px 45px rgba(217, 179, 108, 0.35);
+    }
+
+    /* =====================================================
+       HERO / TOPO DO SITE
+    ===================================================== */
+    .hero {
+      position: relative;
+      z-index: 2;
+      min-height: 78vh;
+      padding: 60px 7% 90px;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(3rem, 7vw, 6.7rem);
+      line-height: 0.95;
+      color: var(--white);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 span {
+      color: var(--gold);
+    }
+
+    .hero p {
+      max-width: 560px;
+      font-size: 1.2rem;
+      line-height: 1.7;
+      opacity: 0.92;
+      margin-bottom: 30px;
+    }
+
+    /* Card grande do topo */
+    .hero-card {
+      position: relative;
+      min-height: 520px;
+      border: 1px solid rgba(244, 231, 211, 0.18);
+      border-radius: 36px;
+      background: linear-gradient(145deg, rgba(244, 231, 211, 0.1), rgba(255,255,255,0.03));
+      backdrop-filter: blur(18px);
+      box-shadow: 0 30px 90px rgba(0,0,0,0.35);
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+
+    /* Brilho atrás da imagem do topo */
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(217, 179, 108, 0.45), transparent 70%);
+      animation: pulse 4s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+
+    .toposite {
+      position: relative;
+      width: min(500px, 88%);
+      object-fit: contain;
+      z-index: 2;
+      filter: drop-shadow(0 35px 45px rgba(0,0,0,0.45));
+      animation: levitate 3.2s infinite ease-in-out;
+    }
+
+    @keyframes levitate {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-16px) rotate(2deg); }
+    }
+
+    /* Fumaça decorativa no card do topo */
+    .steam {
+      position: absolute;
+      top: 80px;
+      width: 12px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.16);
+      filter: blur(8px);
+      animation: steam 3s infinite ease-in-out;
+    }
+
+    .steam:nth-child(1) { left: 38%; animation-delay: 0s; }
+    .steam:nth-child(2) { left: 50%; animation-delay: 0.7s; }
+    .steam:nth-child(3) { left: 62%; animation-delay: 1.4s; }
+
+    @keyframes steam {
+      0% { transform: translateY(70px) scale(0.7); opacity: 0; }
+      50% { opacity: 0.8; }
+      100% { transform: translateY(-80px) scale(1.3); opacity: 0; }
+    }
+
+    /* =====================================================
+       SEÇÕES GERAIS
+    ===================================================== */
+    section {
+      position: relative;
+      z-index: 2;
+      padding: 70px 7%;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 34px;
+    }
+
+    .section-title h2 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(2.3rem, 4vw, 4rem);
+      color: var(--gold);
+    }
+
+    .section-title p {
+      max-width: 720px;
+      line-height: 1.6;
+      opacity: 0.85;
+    }
+
+    /* =====================================================
+       VÍDEO RESPONSIVO DA SEÇÃO HISTÓRIA
+    ===================================================== */
+    .video-box {
+      margin-top: 28px;
+      width: 100%;
+      max-width: 760px;
+    }
+
+    .video-box iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      height: auto;
+      border-radius: 24px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    }
+
+    /* =====================================================
+       FILTROS DO CARDÁPIO
+    ===================================================== */
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 34px;
+    }
+
+    .filter-btn {
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(244, 231, 211, 0.22);
+      background: rgba(255,255,255,0.06);
+      color: var(--cream);
+      cursor: pointer;
+      font-weight: 800;
+      transition: 0.3s;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: var(--gold);
+      color: #2b1c10;
+    }
+
+    /* =====================================================
+       CARDS DO CARDÁPIO
+    ===================================================== */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 26px;
+    }
+
+    .menu-card {
+      position: relative;
+      min-height: 520px;
+      padding: 26px;
+      padding-bottom: 90px;
+      border-radius: 30px;
+      background:
+        linear-gradient(160deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04)),
+        radial-gradient(circle at top right, rgba(217,179,108,0.24), transparent 40%);
+      border: 1px solid rgba(244, 231, 211, 0.15);
+      box-shadow: 0 24px 70px rgba(0,0,0,0.25);
+      overflow: hidden;
+      cursor: pointer;
+      transition: 0.35s;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-12px);
+      border-color: rgba(217, 179, 108, 0.65);
+    }
+
+    .menu-card::after {
+      content: "";
+      position: absolute;
+      inset: auto -20% -45% -20%;
+      height: 240px;
+      background: radial-gradient(circle, rgba(217,179,108,0.35), transparent 70%);
+      opacity: 0;
+      transition: 0.4s;
+    }
+
+    .menu-card:hover::after {
+      opacity: 1;
+    }
+
+    .tag {
+      display: inline-flex;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(217, 179, 108, 0.15);
+      color: var(--gold);
+      font-size: 0.8rem;
+      font-weight: 900;
+      margin-bottom: 18px;
+    }
+
+    .menu-card h3 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 2rem;
+      color: var(--white);
+      text-align: center;
+      margin-top: 8px;
+      margin-bottom: 18px;
+      line-height: 1.1;
+      font-weight: 700;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.35);
+    }
+
+    .imagem_lanche {
+      width: 100%;
+      min-height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+
+    .imagem_lanche img {
+      max-width: 100%;
+      max-height: 220px;
+      object-fit: contain;
+      filter: drop-shadow(0 25px 25px rgba(0,0,0,0.35));
+      transition: 0.4s ease;
+    }
+
+    .menu-card:hover .imagem_lanche img {
+      transform: scale(1.08) rotate(-2deg);
+    }
+
+    .menu-card p {
+      line-height: 1.6;
+      opacity: 0.88;
+      min-height: 90px;
+      overflow-wrap: break-word;
+    }
+
+    .price-row {
+      position: absolute;
+      left: 26px;
+      right: 26px;
+      bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 2;
+    }
+
+    .price {
+      font-size: 1.35rem;
+      color: var(--gold);
+      font-weight: 900;
+    }
+
+    .small-btn {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: none;
+      background: rgba(244, 231, 211, 0.14);
+      color: var(--cream);
+      font-weight: 900;
+    }
+
+    /* =====================================================
+       MODAL DE DETALHES
+    ===================================================== */
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      place-items: center;
+      padding: 24px;
+      background: rgba(0,0,0,0.68);
+      backdrop-filter: blur(12px);
+    }
+
+    .modal.active {
+      display: grid;
+    }
+
+    .modal-content {
+      width: min(920px, 100%);
+      border-radius: 36px;
+      background: linear-gradient(145deg, #446d5c, #0c462e);
+      border: 1px solid rgba(244, 231, 211, 0.18);
+      box-shadow: 0 35px 100px rgba(0,0,0,0.5);
+      padding: 36px;
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 30px;
+      animation: modalIn 0.35s ease;
+    }
+
+    @keyframes modalIn {
+      from { transform: translateY(20px) scale(0.96); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .modal-emoji {
+      display: grid;
+      place-items: center;
+      border-radius: 28px;
+      background: rgba(255,255,255,0.07);
+      min-height: 260px;
+    }
+
+    .modal-emoji img {
+      width: 100%;
+      max-width: 320px;
+      object-fit: contain;
+    }
+
+    .modal h4 {
+      font-family: "Cormorant Garamond", serif;
+      color: var(--gold);
+      font-size: 3rem;
+      margin-bottom: 12px;
+      line-height: 1;
+    }
+
+    .modal p {
+      line-height: 1.7;
+      margin-bottom: 16px;
+      opacity: 0.9;
+    }
+
+    .close {
+      margin-top: 16px;
+    }
+
+    /* =====================================================
+       RODAPÉ COM REDES SOCIAIS E MAPA
+    ===================================================== */
+    .footer {
+      position: relative;
+      z-index: 2;
+      padding: 60px 7% 25px;
+      background: rgba(5, 12, 10, 0.55);
+      backdrop-filter: blur(14px);
+      border-top: 1px solid rgba(244, 231, 211, 0.15);
+      color: var(--cream);
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.2fr;
+      gap: 36px;
+      align-items: start;
+    }
+
+    .footer h3 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 2rem;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .footer h4 {
+      color: var(--gold);
+      margin-bottom: 14px;
+      font-size: 1.2rem;
+    }
+
+    .footer p {
+      line-height: 1.7;
+      opacity: 0.9;
+      margin-bottom: 8px;
+    }
+    .footer-brand {
+      text-align: center;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .social-links a {
+      text-decoration: none;
+      color: #2b1c10;
+      background: var(--gold);
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-weight: 900;
+      transition: 0.3s;
+    }
+
+    .social-links a:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 25px rgba(217, 179, 108, 0.3);
+    }
+
+    .footer-map iframe {
+      width: 100%;
+      height: 250px;
+      border-radius: 22px;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.35);
+    }
+
+    .footer-bottom {
+      margin-top: 36px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(244, 231, 211, 0.12);
+      text-align: center;
+      font-size: 0.95rem;
+      opacity: 0.8;
+    }
+
+    /* =====================================================
+       BOTÃO FLUTUANTE DO WHATSAPP
+    ===================================================== */
+    .whatsapp-button {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 75px;
+      height: 75px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      box-shadow: 0 10px 30px rgba(37, 211, 102, 0.45);
+      transition: 0.3s ease;
+      animation: whatsappPulse 2s infinite;
+    }
+
+    .whatsapp-button img {
+      width: 38px;
+      height: 38px;
+    }
+
+    .whatsapp-button:hover {
+      transform: scale(1.1) translateY(-5px);
+      box-shadow: 0 18px 40px rgba(37, 211, 102, 0.6);
+    }
+
+    @keyframes whatsappPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+
+    /* =====================================================
+       POEIRA MÁGICA DO MOUSE
+    ===================================================== */
+    .mouse-sparkle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #d9b36c;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      box-shadow:
+        0 0 8px #d9b36c,
+        0 0 16px #f5d891,
+        0 0 24px #fffaf0;
+      animation: sparkleFade 0.7s ease-out forwards;
+    }
+
+    @keyframes sparkleFade {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(0); opacity: 0; }
+    }
+
+    /* =====================================================
+       RESPONSIVIDADE PARA TABLET
+    ===================================================== */
+    @media (max-width: 980px) {
+      header {
+        padding: 16px 5%;
+        gap: 16px;
+      }
+
+      nav {
+        gap: 12px;
+      }
+
+      .hero,
+      .modal-content {
+        grid-template-columns: 1fr;
+      }
+
+      .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+    }
+
+    /* =====================================================
+       RESPONSIVIDADE PARA CELULAR
+    ===================================================== */
+    @media (max-width: 720px) {
+      header {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .logo {
+        justify-content: center;
+      }
+
+      nav {
+        justify-content: center;
+      }
+
+      nav a {
+        font-size: 0.95rem;
+      }
+
+      .btn {
+        padding: 11px 18px;
+      }
+
+      .totoro-fixed {
+        width: 220px;
+        opacity: 0.45;
+      }
+
+      .whatsapp-button {
+        width: 65px;
+        height: 65px;
+        bottom: 20px;
+        right: 20px;
+      }
+
+      .whatsapp-button img {
+        width: 32px;
+        height: 32px;
+      }
+    }
+
+    @media (max-width: 650px) {
+      section,
+      .hero {
+        padding-left: 5%;
+        padding-right: 5%;
+      }
+
+      .hero {
+        padding-top: 36px;
+      }
+
+      .hero h1 {
+        font-size: clamp(3rem, 15vw, 4.4rem);
+      }
+
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-title {
+        display: block;
+      }
+
+      .hero-card {
+        min-height: 380px;
+      }
+
+      .modal-content {
+        padding: 24px;
+      }
+
+      .modal h4 {
+        font-size: 2.2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Imagem decorativa fixa no canto inferior esquerdo -->
+  <img src="imagem_photoshop/totoros.png" class="totoro-fixed" alt="Totoro decorativo">
+
+  <!-- Container vazio onde o JavaScript cria partículas mágicas -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Cabeçalho do site -->
+  <header>
+    <div class="logo">
+      <img src="imagem_photoshop/logo.png" alt="Logo Ghibli Burger House">
+      <span>Ghibli Burger House</span>
+    </div>
+
+    <nav>
+      <a href="#cardapio">Cardápio</a>
+      <a href="#historia">História</a>
+      <a href="#contato">Contato</a>
+      <a href="https://wa.me/5511999999999?text=Olá!%20Vim%20pelo%20site%20da%20Ghibli%20Burger%20House" class="btn" target="_blank" rel="noopener noreferrer">Peça Agora</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Seção inicial do site -->
+    <section class="hero">
+      <div>
+        <h1>Onde a fantasia encontra o <span>sabor.</span></h1>
+        <p>
+          Um cardápio digital encantado com hambúrgueres artesanais inspirados em mundos mágicos, florestas vivas e personagens inesquecíveis.
+        </p>
+        <button class="btn" onclick="document.querySelector('#cardapio').scrollIntoView({behavior:'smooth'})">Abrir Cardápio</button>
+      </div>
+
+      <div class="hero-card">
+        <span class="steam"></span>
+        <span class="steam"></span>
+        <span class="steam"></span>
+        <img src="imagem_photoshop/toposite.png" class="toposite" alt="Personagens comendo lanche">
+      </div>
+    </section>
+
+    <!-- Seção do cardápio -->
+    <section id="cardapio">
+      <div class="section-title">
+        <div>
+          <h2>Cardápio Encantado</h2>
+          <p>Escolha uma aventura gastronômica. Passe o mouse nos cards e clique para ver os detalhes do lanche.</p>
+        </div>
+      </div>
+
+      <!-- Botões que filtram os cards por categoria -->
+      <div class="filters">
+        <button class="filter-btn active" data-filter="todos">Todos</button>
+        <button class="filter-btn" data-filter="carnes">Carnes</button>
+        <button class="filter-btn" data-filter="peixes">Peixes</button>
+        <button class="filter-btn" data-filter="vegetariano">Vegetarianos</button>
+        <button class="filter-btn" data-filter="especial">Especiais</button>
+      </div>
+
+      <!-- O JavaScript cria os cards dentro desta div -->
+      <div class="menu-grid" id="menuGrid"></div>
+    </section>
+
+    <!-- Seção institucional -->
+    <section id="historia">
+      <div class="section-title">
+        <div>
+          <h2>Nossa História</h2>
+          <p>
+            A Ghibli Burger House é uma hamburgueria fictícia criada para um projeto de web design. A proposta une identidade visual, storytelling, gastronomia artesanal e uma experiência digital animada.
+          </p>
+
+          <!-- Vídeo responsivo -->
+          <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/5bJ1SfEO4JM?si=qgNEjNVbA1dit0fc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal que aparece quando o usuário clica em um card -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <div class="modal-emoji" id="modalEmoji">🍔</div>
+      <div>
+        <span class="tag" id="modalTag">Especial</span>
+        <h4 id="modalTitle">Nome do Burger</h4>
+        <p id="modalDesc">Descrição do burger.</p>
+        <p><strong>Ingredientes:</strong> <span id="modalIngredients"></span></p>
+        <p class="price" id="modalPrice">R$ 00,00</p>
+        <button class="btn close" onclick="closeModal()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rodapé com redes sociais, contato e mapa -->
+  <footer id="contato" class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>Ghibli Burger House</h3>
+        <p>Hambúrgueres artesanais inspirados em mundos mágicos.</p>
+
+        <div class="social-links">
+          <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer">TikTok</a>
+          <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a>
+        </div>
+      </div>
+
+      <div class="footer-info">
+        <h4>Contato</h4>
+        <p>📍 Rua das Lanternas, 707 - Vila Encantada</p>
+        <p>📞 (11) 99999-9999</p>
+        <p>✉️ contato@ghibliburger.com</p>
+        <p>⏰ Terça a domingo, das 18h às 23h</p>
+      </div>
+
+      <div class="footer-map">
+        <h4>Onde estamos</h4>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3653.2369893587875!2d-46.56046832378426!3d-23.703229566821328!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce43d27702bff9%3A0x89aa7642747502b3!2sR.%20Abilio%20Alves%20-%20S%C3%A3o%20Bernardo%20do%20Campo%2C%20SP%2C%2009725-610!5e0!3m2!1spt-BR!2sbr!4v1779709854382!5m2!1spt-BR!2sbr" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 Ghibli Burger House — Projeto fictício para portfólio.</p>
+    </div>
+  </footer>
+
+  <!-- Botão flutuante do WhatsApp -->
+  <a href="https://wa.me/5511999999999?text=Olá!%20Vim%20pelo%20site%20da%20Ghibli%20Burger%20House" class="whatsapp-button" target="_blank" rel="noopener noreferrer">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+  </a>
+
+  <script>
+    /* =====================================================
+       DADOS DO CARDÁPIO
+       Cada objeto representa um lanche
+    ===================================================== */
+    const items = [
+      {
+        nome: "Chihiro’s Salmon Burger",
+        categoria: "peixes",
+        tag: "Fresco e delicado",
+        imagem: "imagem_photoshop/chiriros.png",
+        preco: "R$ 36,90",
+        desc: "Hambúrguer de salmão defumado com sabor leve, fresco e visual marcante.",
+        ingredientes: "Pão de centeio artesanal, salmão defumado fatiado, requeijão cremoso, pepino japonês, cebola roxa e alface crespa."
+      },
+      {
+        nome: "Kiki’s Sky Burger",
+        categoria: "vegetariano",
+        tag: "Vegetariano",
+        imagem: "imagem_photoshop/kiks.png",
+        preco: "R$ 32,90",
+        desc: "Um lanche leve, colorido e cheio de energia para voar pela cidade.",
+        ingredientes: "Pão integral com gergelim preto, hambúrguer artesanal de grão-de-bico, homus de pimentão vermelho, abacate fresco e rúcula crocante."
+      },
+      {
+        nome: "San’s Forest Burger",
+        categoria: "carnes",
+        tag: "Selvagem",
+        imagem: "imagem_photoshop/cordeiro.png",
+        preco: "R$ 39,90",
+        desc: "Intenso, rústico e conectado aos sabores da floresta.",
+        ingredientes: "Pão rústico, cordeiro desfiado lentamente, molho de iogurte com hortelã e folhas frescas."
+      },
+      {
+        nome: "Moro’s Giant Burger",
+        categoria: "especial",
+        tag: "Gigante",
+        imagem: "imagem_photoshop/chiriros.png",
+        preco: "R$ 49,90",
+        desc: "Um hambúrguer colossal digno dos grandes espíritos da floresta.",
+        ingredientes: "Pão brioche gigante, carne de javali grelhada, queijo gorgonzola derretido e bacon crocante."
+      },
+      {
+        nome: "Ponyo’s Ocean Burger",
+        categoria: "peixes",
+        tag: "Crocante",
+        imagem: "imagem_photoshop/chiriros.png",
+        preco: "R$ 37,90",
+        desc: "Praiano, alegre e crocante como uma aventura no mar.",
+        ingredientes: "Pão clássico com gergelim, camarões empanados em panko, molho tártaro artesanal, alface lisa e tomate cereja."
+      },
+      {
+        nome: "Kodama Mini Sliders",
+        categoria: "vegetariano",
+        tag: "Mini burgers",
+        imagem: "imagem_photoshop/kiks.png",
+        preco: "R$ 29,90",
+        desc: "Pequenos, fofos e cheios de sabor natural.",
+        ingredientes: "Mini pães brioche, abobrinha, berinjela e pimentão grelhados, queijo minas frescal, azeite de oliva e orégano."
+      },
+      {
+        nome: "Baron’s Royal Burger",
+        categoria: "peixes",
+        tag: "Sofisticado",
+        imagem: "imagem_photoshop/chiriros.png",
+        preco: "R$ 42,90",
+        desc: "Elegante, refinado e digno de um jantar no Reino dos Gatos.",
+        ingredientes: "Pão brioche amanteigado, salmão grelhado e maionese de wasabi artesanal."
+      },
+      {
+        nome: "Muta Monster Burger",
+        categoria: "especial",
+        tag: "Monstruoso",
+        imagem: "imagem_photoshop/muta.png",
+        preco: "R$ 54,90",
+        desc: "Exagerado, divertido e absolutamente irresistível.",
+        ingredientes: "Três carnes artesanais, queijo derretido, bacon crocante e ovo frito no pão gigante."
+      },
+      {
+        nome: "Mei’s Crispy Chicken",
+        categoria: "carnes",
+        tag: "Crocante",
+        imagem: "imagem_photoshop/cordeiro.png",
+        preco: "R$ 34,90",
+        desc: "Simples, feliz e perfeito para dias ensolarados.",
+        ingredientes: "Pão brioche, peito de frango crocante, queijo muçarela derretido, maionese temperada, alface e tomate cereja."
+      }
+    ];
+
+    const menuGrid = document.getElementById("menuGrid");
+    const filterButtons = document.querySelectorAll(".filter-btn");
+
+    /* Cria os cards do cardápio dinamicamente */
+    function renderMenu(filter = "todos") {
+      menuGrid.innerHTML = "";
+
+      const filteredItems = filter === "todos"
+        ? items
+        : items.filter(item => item.categoria === filter);
+
+      filteredItems.forEach(item => {
+        const card = document.createElement("article");
+        card.className = "menu-card";
+
+        card.innerHTML = `
+          <span class="tag">${item.tag}</span>
+
+          <h3>${item.nome}</h3>
+
+          <div class="imagem_lanche">
+            <img src="${item.imagem}" alt="${item.nome}">
+          </div>
+
+          <p>${item.desc}</p>
+
+          <div class="price-row">
+            <span class="price">${item.preco}</span>
+            <button class="small-btn">Ver detalhes</button>
+          </div>
+        `;
+
+        card.addEventListener("click", () => openModal(item));
+        menuGrid.appendChild(card);
+      });
+    }
+
+    /* Ativa os filtros do cardápio */
+    filterButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        filterButtons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+        renderMenu(button.dataset.filter);
+      });
+    });
+
+    /* Abre o modal com informações do lanche clicado */
+    function openModal(item) {
+      document.getElementById("modalEmoji").innerHTML = `<img src="${item.imagem}" alt="${item.nome}">`;
+      document.getElementById("modalTag").textContent = item.tag;
+      document.getElementById("modalTitle").textContent = item.nome;
+      document.getElementById("modalDesc").textContent = item.desc;
+      document.getElementById("modalIngredients").textContent = item.ingredientes;
+      document.getElementById("modalPrice").textContent = item.preco;
+      document.getElementById("modal").classList.add("active");
+    }
+
+    /* Fecha o modal */
+    function closeModal() {
+      document.getElementById("modal").classList.remove("active");
+    }
+
+    /* Fecha o modal ao clicar fora do conteúdo */
+    document.getElementById("modal").addEventListener("click", event => {
+      if (event.target.id === "modal") closeModal();
+    });
+
+    /* Cria partículas mágicas no fundo */
+    function createParticles() {
+      const particles = document.getElementById("particles");
+
+      for (let i = 0; i < 34; i++) {
+        const span = document.createElement("span");
+        span.className = "particle";
+        span.style.left = Math.random() * 100 + "%";
+        span.style.animationDelay = Math.random() * 9 + "s";
+        span.style.animationDuration = 7 + Math.random() * 8 + "s";
+        span.style.opacity = Math.random();
+        particles.appendChild(span);
+      }
+    }
+
+    /* Cria poeira mágica seguindo o mouse */
+    document.addEventListener("mousemove", function(e) {
+      const sparkle = document.createElement("span");
+      sparkle.className = "mouse-sparkle";
+      sparkle.style.left = e.pageX + "px";
+      sparkle.style.top = e.pageY + "px";
+      document.body.appendChild(sparkle);
+
+      setTimeout(() => {
+        sparkle.remove();
+      }, 700);
+    });
+
+    createParticles();
+    renderMenu();
+  </script>
+</body>
+</html>
